@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta
+    http-equiv="X-UA-Compatible"
+    content="IE=edge"
+  >
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>Document</title>
+
+  <style>
+    .square {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 0;
+      left: 0;
+    }
+
+    .red {
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="square red"></div>
+
+  <script>
+    const STEP_TIME = 10
+    const STEP_LENGTH = 1
+    const SQUARE_DIMENSION = 100
+    let direction = null
+    let x = 0
+    let y = 0
+
+    const square = document.querySelector('.square')
+
+    const move = (deltaX, deltaY) => {
+      x = x + deltaX
+      if (x < 0) {
+        x = 0
+        direction = 'right'
+      }
+      if (x > window.innerWidth - SQUARE_DIMENSION) {
+        x = window.innerWidth - SQUARE_DIMENSION
+        direction = 'left'
+      }
+      y = y + deltaY
+      if (y < 0) {
+        y = 0
+        direction = 'down'
+      }
+      if (y > window.innerHeight - SQUARE_DIMENSION) {
+        y = window.innerHeight - SQUARE_DIMENSION
+        direction = 'up'
+      }
+      square.style.left = x + 'px'
+      square.style.top = y + 'px'
+    }
+
+    const moveInDirection = () => {
+      switch (direction) {
+        case 'up':
+          move(0, -STEP_LENGTH)
+          break
+        case 'left':
+          move(-STEP_LENGTH, 0)
+          break
+        case 'down':
+          move(0, STEP_LENGTH)
+          break
+        case 'right':
+          move(STEP_LENGTH, 0)
+          break
+        default:
+          break
+      }
+    }
+
+    setInterval(() => {
+      moveInDirection()
+    }, STEP_TIME)
+
+    window.addEventListener(
+      'keydown',
+      (event) => {
+        switch (event.key) {
+          case 'ArrowUp':
+            direction = 'up'
+            break
+          case 'ArrowLeft':
+            direction = 'left'
+            break
+          case 'ArrowDown':
+            direction = 'down'
+            break
+          case 'ArrowRight':
+            direction = 'right'
+            break
+          default:
+            direction = null
+            break
+        }
+      }
+    )
+
+  </script>
+
+</body>
+
+</html>
