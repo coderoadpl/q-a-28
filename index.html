@@ -35,10 +35,12 @@
   <script>
     const STEP_TIME = 10
     const STEP_LENGTH = 1
+    const VELOCITY = STEP_LENGTH / STEP_TIME
     const SQUARE_DIMENSION = 100
     let direction = null
     let x = 0
     let y = 0
+    let start = 0
 
     const square = document.querySelector('.square')
 
@@ -65,28 +67,39 @@
       square.style.top = y + 'px'
     }
 
-    const moveInDirection = () => {
+    const moveInDirection = (time) => {
+      const road = VELOCITY * time
       switch (direction) {
         case 'up':
-          move(0, -STEP_LENGTH)
+          move(0, -road)
           break
         case 'left':
-          move(-STEP_LENGTH, 0)
+          move(-road, 0)
           break
         case 'down':
-          move(0, STEP_LENGTH)
+          move(0, road)
           break
         case 'right':
-          move(STEP_LENGTH, 0)
+          move(road, 0)
           break
         default:
           break
       }
     }
 
-    setInterval(() => {
-      moveInDirection()
-    }, STEP_TIME)
+    const step = (timestamp) => {
+      elapsed = timestamp - start
+      start = timestamp
+
+      // for(let i = 0; i < 500 * 1000 * 1000; i++){}
+
+      // console.log(elapsed)
+
+      moveInDirection(elapsed)
+      window.requestAnimationFrame(step)
+    }
+
+    window.requestAnimationFrame(step)
 
     window.addEventListener(
       'keydown',
